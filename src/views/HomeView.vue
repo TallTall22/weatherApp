@@ -1,7 +1,9 @@
 <script setup>
 import axios from 'axios';
 import { ref } from 'vue';
+import { useRouter } from 'vue-router';
 
+const router=useRouter()
 const mapboxAPIKey="pk.eyJ1IjoidGFsbHRhbGwiLCJhIjoiY2x0cmUyY3VxMGRqNTJsbzU3ZWhtNDVsaiJ9._lQaI3UANYgUwgg5knY-pA"
 const searchQuery=ref("")
 const queryTimeout=ref(null)
@@ -23,6 +25,22 @@ const getSearchResult=()=>{
     mapboxSearchResult.value=null
   },300)
 }
+
+const previewCity=(searchResult)=>{
+  const [city,state]=searchResult.place_name.split(",")
+  router.push({
+    name:"cityView",
+    params:{
+      state:state.replace(" ",""),
+      city:city
+    },
+    query:{
+      lat:searchResult.geometry.coordinates[1],
+      lng:searchResult.geometry.coordinates[0],
+      preview:true
+    }
+  })
+}
 </script>
 
 <template>
@@ -43,7 +61,8 @@ const getSearchResult=()=>{
           無匹配資料，請輸入其他城市名
         </p>
         <template v-else>
-          <li v-for="searchResult in mapboxSearchResult" :key="searchResult.id" class="py-2 cursor-pointer">
+          <li v-for="searchResult in mapboxSearchResult" :key="searchResult.id" class="py-2 cursor-pointer"
+          @click="previewCity(searchResult)">
             {{ searchResult.place_name }}
           </li>
         </template>
