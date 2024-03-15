@@ -3,9 +3,10 @@
   import {useRoute} from "vue-router"
 
   const route=useRoute()
+  const weatherAPIKey=import.meta.env.VITE_WEATHER_API_KEY
   const getWeatherData=async()=>{
     try{
-      const weatherData=await axios.get(`https://api.openweathermap.org/data/3.0/onecall?lat=${route.query.lat}&lon=${route.query.lng}&exclude={part}&appid=6f2ba68781d8cfa0bc5f225762219f37`)
+      const weatherData=await axios.get(`https://api.openweathermap.org/data/3.0/onecall?lat=${route.query.lat}&lon=${route.query.lng}&exclude={part}&appid=${weatherAPIKey}`)
 
        // 計算現在日期及時間
       const localOffset = new Date().getTimezoneOffset() * 60000;

@@ -4,7 +4,7 @@ import { ref } from 'vue';
 import { useRouter } from 'vue-router';
 
 const router=useRouter()
-const mapboxAPIKey="pk.eyJ1IjoidGFsbHRhbGwiLCJhIjoiY2x0cmUyY3VxMGRqNTJsbzU3ZWhtNDVsaiJ9._lQaI3UANYgUwgg5knY-pA"
+const mapboxAPIKey=import.meta.env.VITE_MAPBOX_API_KEY
 const searchQuery=ref("")
 const queryTimeout=ref(null)
 const mapboxSearchResult=ref(null)
