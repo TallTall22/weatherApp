@@ -1,8 +1,9 @@
 <script setup>
   import axios from 'axios';
-  import {useRoute} from "vue-router"
+  import {useRoute, useRouter} from "vue-router"
 
   const route=useRoute()
+  const router=useRouter()
   const weatherAPIKey=import.meta.env.VITE_WEATHER_API_KEY
   const getWeatherData=async()=>{
     try{
@@ -26,6 +27,15 @@
   }
 
   const weatherData=await getWeatherData()
+
+  const removeCity=()=>{
+    const cities=JSON.parse(localStorage.getItem("savedCities"))
+    const updatedCities=cities.filter((city)=>city.id!==route.query.id)
+    localStorage.setItem("savedCities",JSON.stringify(updatedCities))
+    router.push({
+      name:'home'
+    })
+  }
 </script>
 
 <template>
@@ -132,6 +142,11 @@
              </div>
         </div>
       </div>
+    </div>
+
+    <div class="flex items-center gap-2 py-12 text-white cursor-pointer duration-150 hover:text-red-500" @click="removeCity">
+      <i class="fa-solid fa-trash-can"></i>
+      <p>移除城市</p>
     </div>
   </div>
 </template>
