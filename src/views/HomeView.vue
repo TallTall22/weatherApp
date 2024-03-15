@@ -30,9 +30,11 @@ const getSearchResult=()=>{
 
 const previewCity=(searchResult)=>{
   const [city,state]=searchResult.place_name.split(",")
+  let savedCity=null
   const cities=JSON.parse(localStorage.getItem("savedCities"))
-  const savedCity=cities.some((theCity)=>theCity.city===city)
-  
+  if(cities){
+    savedCity=cities.some((theCity)=>theCity.city===city)
+  }
   router.push({
     name:"cityView",
     params:{
