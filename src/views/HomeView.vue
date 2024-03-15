@@ -1,4 +1,5 @@
 <script setup>
+import CityCardskeleton from '@/components/CityCardskeleton.vue';
 import CityList from '@/components/CityList.vue';
 import axios from 'axios';
 import { ref } from 'vue';
@@ -29,6 +30,9 @@ const getSearchResult=()=>{
 
 const previewCity=(searchResult)=>{
   const [city,state]=searchResult.place_name.split(",")
+  const cities=JSON.parse(localStorage.getItem("savedCities"))
+  const savedCity=cities.some((theCity)=>theCity.city===city)
+  
   router.push({
     name:"cityView",
     params:{
@@ -38,9 +42,9 @@ const previewCity=(searchResult)=>{
     query:{
       lat:searchResult.geometry.coordinates[1],
       lng:searchResult.geometry.coordinates[0],
-      preview:true
+      ...savedCity?{}:{preview:true}
     }
-  })
+  })  
 }
 </script>
 
@@ -73,7 +77,7 @@ const previewCity=(searchResult)=>{
     <Suspense>
       <CityList />
       <template #fallback>
-        <p>Loading...</p>
+        <CityCardskeleton/>
       </template>
     </Suspense>
   </div>
